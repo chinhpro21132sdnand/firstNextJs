@@ -4,6 +4,7 @@ import Data from "../components/data";
 import New from "../components/news";
 import PhonePackage from "@/components/phonePackage";
 import NewPaper from "@/components/newPaper";
+import Footer from "@/components/footer";
 export default function Home() {
   return (
     <html lang="en">
@@ -21,6 +22,7 @@ export default function Home() {
         <PhonePackage />
         <New />
         <NewPaper />
+        <Footer />
       </body>
     </html>
   );

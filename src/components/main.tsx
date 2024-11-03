@@ -57,8 +57,8 @@ export default async function Main() {
   return (
     <section>
       <section>
-        <div>
-          <div className="Banner">
+        <div className=" w-screen overflow-hidden">
+          <div className="Banner w-full">
             <img
               src="https://muavip.vn/_next/image?url=https%3A%2F%2Fmuavip.vn%2Fuploads%2Fimages%2Fbanner%2Fimage_2024-10-22_15-36-51_(1).png&w=1920&q=75"
               alt=""
