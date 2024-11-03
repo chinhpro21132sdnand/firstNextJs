@@ -1,0 +1,107 @@
+.button {
+  padding: 10px;
+  border-radius: 10px;
+  color: aliceblue;
+  background-color: darkgoldenrod;
+  cursor: pointer;
+  border: 0px;
+}
+.header-top {
+  background-image: url(https://muavip.vn/_next/static/media/headerBackground.e0641fb8.jpg);
+}
+section {
+  margin-bottom: 20px;
+}
+.cardphone {
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+.title-abs {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 4%;
+  border: 1px #abc9e1;
+  transform: translate(-50%, -50%);
+  width: auto;
+  text-align: center;
+}
+.title-abs::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-color: transparent #abc9e1 #abc9e1 transparent;
+  border-width: 6px;
+  border-style: solid;
+  left: -12px;
+}
+.isActive {
+  color: white;
+  background-color: #8661e8;
+}
+.title-abs::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-color: transparent transparent #abc9e1 #abc9e1;
+  border-width: 6px;
+  border-style: solid;
+  right: -12px;
+}
+.cardphone:hover {
+  box-shadow: 0 0 20px rgba(146, 143, 143, 0.8);
+  transform: translateY(-8px);
+}
+.data-hov {
+  transition: transform 0.3s ease;
+}
+.data-hov:hover {
+  box-shadow: 0 0 20px rgba(146, 143, 143, 0.8);
+  transform: translateY(-8px);
+}
+.phonePackage {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.phonePackage:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(146, 143, 143, 0.8);
+  animation: rotate 1s ease-in-out forwards;
+}
+
+.phonePackage:hover {
+  animation-delay: 0.3s;
+}
+
+@keyframes rotate {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(15deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-10px) rotate(-15deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+.iconStore {
+  padding: 8px;
+  margin-right: 7px;
+  border: 1px solid #d2d2d2;
+  border-radius: 3px;
+  color: #815bef;
+}
+.titleActive {
+  background-color: #815bef;
+  color: white;
+}

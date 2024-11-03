@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+1. Sử dụng getStaticProps (SSG - Static Site Generation)
+getStaticProps là một hàm đặc biệt của Next.js, chỉ chạy ở server-side khi bạn build ứng dụng (lệnh next build). Hàm này dùng để lấy dữ liệu và render trang một cách tĩnh. Trang được tạo ra sẽ không thay đổi sau khi build, trừ khi bạn build lại hoặc thiết lập tái tạo lại (revalidation).
 
-## Getting Started
+Khi nào nên dùng getStaticProps:
 
-First, run the development server:
+Khi dữ liệu không cần thay đổi thường xuyên (VD: dữ liệu về sản phẩm, blog,...).
+Khi muốn tối ưu hóa hiệu suất, vì Next.js sẽ tạo ra trang tĩnh sẵn sàng trả về ngay lập tức.
+Khi trang cần tối ưu cho SEO vì trang tĩnh sẽ được lập chỉ mục dễ dàng.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Sử dụng getServerSideProps (SSR - Server Side Rendering)
+getServerSideProps cũng là một hàm chạy phía server, nhưng khác với getStaticProps, nó chạy mỗi lần có yêu cầu từ người dùng. Điều này có nghĩa là mỗi khi người dùng tải lại trang, getServerSideProps sẽ fetch dữ liệu mới và render trang theo yêu cầu.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Khi nào nên dùng getServerSideProps:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Khi cần dữ liệu luôn luôn mới, như dữ liệu thời gian thực hoặc dữ liệu thay đổi thường xuyên.
+Khi dữ liệu phụ thuộc vào user, như là dashboard, thông tin người dùng,...
 
-## Learn More
+3. Sử dụng useEffect để fetch dữ liệu phía client
+useEffect là một hook chạy ở phía client, thường được sử dụng để fetch dữ liệu sau khi trang đã render. Phương pháp này không tối ưu cho SEO vì nội dung được fetch sau khi trang tải xong, nhưng rất tiện khi không muốn server phải fetch dữ liệu và chỉ cần client xử lý.
 
-To learn more about Next.js, take a look at the following resources:
+Khi nào nên dùng useEffect để fetch dữ liệu:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Khi dữ liệu không cần thiết phải tải trước cho SEO.
+Khi dữ liệu thay đổi thường xuyên, hoặc phụ thuộc vào các hành động từ người dùng.
