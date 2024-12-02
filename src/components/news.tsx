@@ -18,13 +18,15 @@ export default function New() {
   ];
   return (
     <section className="mt-12">
-      <div className="mx-auto xl:max-w-[1320px]">
-        <div className="text-4xl font-bold">Tra cứu và hỗ trợ</div>
+      <div className="mx-auto xl:max-w-[1320px] xs:p-[20px]">
+        <div className="md:text-3xl xs:text-xl font-bold">
+          Tra cứu và hỗ trợ
+        </div>
 
         <div className="mt-4 mb-10 w-[100%] h-[2px] bg-slate-200"></div>
 
         <div className="w-[100%] rounded-lg border-solid border-t-2 border-slate-200 bg-emerald-50 ">
-          <div className="grid grid-column-3 grid-flow-col gap-4  pt-3 pb-3 pl-5 pr-5">
+          <div className="grid md:grid-rows-1 xs:grid-rows-3 grid-flow-col gap-4  pt-3 pb-3 pl-5 pr-5">
             {data.map((item, index) => (
               <div key={index}>
                 <div className="flex  rounded-lg pt-4 pb-4 pl-3 bg-white hover:scale-105 ease-out  duration-300 ">

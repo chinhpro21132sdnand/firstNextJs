@@ -108,23 +108,31 @@ export default function PhonePackage() {
   };
   return (
     <section className="mt-12">
-      <div className="mx-auto xl:max-w-[1320px]">
-        <div className="flex justify-between  ">
-          <div className="text-3xl font-bold">Đăng ký gói cước</div>
-          <div className="flex  items-center gap-2 ">
+      <div className="mx-auto xl:max-w-[1320px] xs:p-[20px] md:p-[0]">
+        <div className="grid grid-cols-12 gap-2  ">
+          <div className="md:text-3xl xs:text-xl font-bold  col-span-6 md:order-1 xs:order-1">
+            Đăng ký gói cước
+          </div>
+          <div className="flex items-center gap-2 col-span-6 md:justify-end md:order-2 xs:order-4 xs:mt-4 xs:mb-6 ">
             {NetWork.map((item, index) => (
               <div
                 key={index}
                 className="flex items-center justify-center rounded-xl bg-purple-500 cursor-pointer "
               >
-                <p className=" pl-4 pr-4 text-white  text-sm">{item.title}</p>
+                <p className=" pl-4 pr-4 text-white text-sm">{item.title}</p>
               </div>
             ))}
+          </div>
+          <div className=" mt-4 md:mb-10 w-[100%] h-[2px] bg-slate-200 col-span-12 md:order-3 xs:order-3 "></div>
+          <div className="md:order-4 xs:order-1 xs:flex xs:justify-end ">
+            <span className="material-icons pr-1 col-span-6 md:hidden ">
+              storefront
+            </span>
           </div>
         </div>
         <div className="mt-4 mb-10 w-[100%] h-[2px] bg-slate-200"></div>
         <div className="bg-emerald-50 pt-6 pb-6 pl-4 pr-4 rounded-lg border border-slate-300">
-          <div className="flex flex-wrap justify-between gap-2">
+          <div className="grid md:grid-cols-3 xs:grid-cols-1 gap-3">
             {data.map((item, index) => (
               <div key={index}>
                 <div className="phonePackage border border-slate-300 cursor-pointer  rounded-lg w-[420px] h-[280px] bg-white">
