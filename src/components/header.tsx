@@ -72,11 +72,14 @@ const Header = () => {
           </div>
         </div>
         <div className="flex md:hidden">
-          <div className="p-2 rounded-lg bg-[#815bef]">
-            <span className="material-icons text-white">menu</span>
+          <div className="p-1 m-2 flex rounded-lg bg-[#815bef]">
+            <span className="material-icons text-white text-[19px]">menu</span>
           </div>
-          <div>
-            <input type="text" />
+          <div className="relative ml-3 flex items-center w-[90%] border border-1 rounded-2xl">
+            <input spellCheck="false" className="w-[90%] pl-10 focus:outline-none text-stone-950" placeholder="Tìm kiếm" type="text" />
+            <div className="absolute  flex  items-center pl-3 ">
+              <span className="material-icons text-stone-950">search</span>
+            </div>
           </div>
         </div>
       </div>
