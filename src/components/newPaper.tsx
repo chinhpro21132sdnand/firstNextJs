@@ -45,8 +45,8 @@ export default function NewPaper() {
   };
   return (
     <section className="mt-12">
-      <div className="mx-auto xl:max-w-[1320px]">
-        <div className="text-4xl font-bold">Tin Tức,Sự Kiện</div>
+      <div className="mx-auto xl:max-w-[1320px] xs:p-[20px]">
+        <div className="md:text-3xl xs:text-xl font-bold">Tin Tức,Sự Kiện</div>
         <div className="mt-4 mb-2 w-[100%] h-[2px] bg-slate-200"></div>
         <div className="flex gap-2 mb-10">
           {dataNew.map((item, index) => (
@@ -62,18 +62,18 @@ export default function NewPaper() {
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-2  gap-4">
+        <div className="grid md:grid-cols-2 xs:grid-cols-1 gap-4">
           {data.map((item, index) => (
             <div key={index}>
-              <div className="flex">
-                <div className="w-[40%] rounded-lg overflow-hidden ">
+              <div className="grid grid-cols-12 ">
+                <div className="col-span-5  rounded-lg overflow-hidden">
                   <img
-                    className="hover:scale-105 ease-in-out duration-300  "
+                    className="hover:scale-105 ease-in-out duration-300 md:w-full md:h-full object-cover "
                     src={item.img}
                     alt=""
                   />
                 </div>
-                <div className="w-[60%] pl-2 flex flex-col justify-between ml-4 w-full">
+                <div className="col-span-7 pl-2 flex flex-col justify-between ml-4 w-full">
                   <p className="text-lg font-semibold ">{item.title}</p>
                   <p className="pt-1 pb-1 text-base text-slate-400	">
                     {item.date}

@@ -1,18 +1,30 @@
-// pages/_app.js (hoặc _app.tsx nếu bạn sử dụng TypeScript)
+// pages/_app.tsx (Page Router) hoặc app/layout.tsx (App Router)
+import "@/assets/style/global.css"; // Import CSS toàn cục
 import Head from "next/head";
-import { AppProps } from "next/app";
-
-export default function App({ Component, pageProps }: AppProps) {
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import type { AppProps } from "next/app"; // Nếu dùng Page Router
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        {/* Thêm thẻ link cho Google Fonts Icons */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Mô tả trang web của bạn ở đây" />
+        <meta name="robots" content="index, follow" />
       </Head>
-      <Component {...pageProps} />
+      <div className="custom-scrollbar">
+        <Header />
+        <main className="flex-grow mt-[7.5rem] md:mt-36 scroolll-x">
+          <Component {...pageProps} />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }
+
+export default MyApp;

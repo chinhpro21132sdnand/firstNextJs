@@ -109,3 +109,36 @@ section {
 .footer-bt {
   background-image: url(https://muavip.vn/_next/static/media/headerBackground.e0641fb8.jpg);
 }
+
+/* Container */
+.exploding-image:hover {
+  position: relative;
+  animation: explode 2s ease-in-out forwards; /* Gọi animation */
+}
+
+/* Hình ảnh */
+.exploding-image img {
+  object-fit: contain; /* Giữ tỉ lệ hình ảnh */
+  border-radius: 50%; /* Làm tròn hình nếu cần */
+  transform: rotateX(10deg) rotateY(30deg) scale(1.1);
+}
+
+/* Animation */
+@keyframes explode {
+  0% {
+    transform: scale(1); /* Kích thước ban đầu */
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5); /* To dần */
+    opacity: 0.8; /* Mờ dần */
+  }
+  70% {
+    transform: scale(2); /* To nhanh hơn */
+    opacity: 0.5; /* Mờ hơn */
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

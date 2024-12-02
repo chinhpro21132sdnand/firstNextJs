@@ -1,14 +1,17 @@
 // pages/index.js (hoặc pages/home.js)
 import "../assets/style/global.css";
 import "../assets/style/components/_button.css";
+import linkSideBar from "../components/comon/link";
+import Link from "next/link";
+
 const Header = () => {
   return (
     <header className="header fixed top-0 left-0 w-screen z-[999] bg-gray-800 mb-4">
       <div className="header-top w-[100%] mx-auto xl:max-w-[1320px] p-2">
         <div className="md:container w-[100%] xl:max-w-[1320px] mx-auto flex items-center justify-between ">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 exploding-image">
             <img
-              className="w-[220px] h-[80px] object-contain"
+              className="w-[220px] h-[80px] object-contain cursor-pointer"
               src="https://muavip.vn/_next/image?url=https%3A%2F%2Fmuavip.vn%2Fuploads%2Fimages%2Flogo%2Flogo_ngang.png&w=256&q=75"
               alt="Logo"
             />
@@ -51,11 +54,15 @@ const Header = () => {
         <div className="hidden md:flex md:px-2  md:container xl:max-w-[1320px] mx-auto justify-between items-center">
           <div>
             <ul className="flex item-center gap-3 ">
-              <li>Trang chủ</li>
-              <li>Gói cước</li>
-              <li>Nạp Data</li>
-              <li>Nạp thẻ</li>
-              <li>Tra cứu,hỗ trợ</li>
+              {linkSideBar.map((item) => {
+                return (
+                  <li key={item.id}>
+                    <Link className="hover:text-[#815bef]" href={item.href}>
+                      {item.name}{" "}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 

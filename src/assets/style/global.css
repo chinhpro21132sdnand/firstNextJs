@@ -15,3 +15,38 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
 }
+html {
+  scroll-behavior: smooth;
+}
+
+html::-webkit-scrollbar {
+  width: 10px;
+  height: 12px;
+}
+
+/* Nền của thanh cuộn */
+html::-webkit-scrollbar-track {
+  background: #fff !important;
+  border-radius: 10px;
+}
+
+/* Thanh cuộn chính */
+html::-webkit-scrollbar-thumb {
+  background: #815bef;
+  border-radius: 10px;
+}
+.popup {
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+}
+.submit-code {
+  transform: translate(-140%, 35%);
+  background-color: #815bef;
+  padding: 4px 12px 4px 12px;
+  border: none;
+}
