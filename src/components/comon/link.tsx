@@ -20,7 +20,7 @@ const linkSideBar: IDataMenuMain[] = [
   {
     id: 3,
     name: "Nạp data",
-    href: "/data",
+    href: "/dataPackage",
     children: null,
   },
   {

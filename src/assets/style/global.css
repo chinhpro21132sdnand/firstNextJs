@@ -32,7 +32,7 @@ html::-webkit-scrollbar-track {
 
 /* Thanh cuộn chính */
 html::-webkit-scrollbar-thumb {
-  background: #815bef;
+  background: #1e2836;
   border-radius: 10px;
 }
 .popup {
@@ -41,7 +41,6 @@ html::-webkit-scrollbar-thumb {
   z-index: 1000;
   background-color: rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  display: flex;
   align-items: center;
 }
 .submit-code {
@@ -49,4 +48,13 @@ html::-webkit-scrollbar-thumb {
   background-color: #815bef;
   padding: 4px 12px 4px 12px;
   border: none;
+}
+
+.menu {
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.1); 
+  backdrop-filter: blur(10px); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  padding: 10px;
+  border-radius: 10px;
 }

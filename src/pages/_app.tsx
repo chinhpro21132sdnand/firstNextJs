@@ -1,30 +1,38 @@
-// pages/_app.tsx (Page Router) hoặc app/layout.tsx (App Router)
-import "@/assets/style/global.css"; // Import CSS toàn cục
-import Head from "next/head";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import type { AppProps } from "next/app"; // Nếu dùng Page Router
+import "@/assets/style/global.css";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "../config/firebase";
+import type { AppProps } from "next/app";
+import Home from "./login";
+import { useEffect } from "react";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Head>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Mô tả trang web của bạn ở đây" />
-        <meta name="robots" content="index, follow" />
-      </Head>
-      <div className="custom-scrollbar">
-        <Header />
-        <main className="flex-grow mt-[7.5rem] md:mt-36 scroolll-x">
-          <Component {...pageProps} />
-        </main>
-        <Footer />
-      </div>
-    </>
-  );
+  const [loggedInUser] = useAuthState(auth);
+  console.log(loggedInUser, "loggedInUser");
+  useEffect(() => {
+    const setUserInDb = async () => {
+      try {
+        await setDoc(
+          doc(db, "users", loggedInUser?.email as string),
+          {
+            email: loggedInUser?.email,
+            Password: loggedInUser?.toJSON,
+            lastSeen: serverTimestamp(),
+            photoURL: loggedInUser?.photoURL,
+          },
+          { merge: true } // just update what is changed
+        );
+      } catch (error) {
+        console.log("ERROR SETTING USER INFO IN DB", error);
+      }
+    };
+
+    if (loggedInUser) {
+      setUserInDb();
+    }
+  }, [loggedInUser]);
+  if (!loggedInUser) return <Home />;
+
+  return <Component {...pageProps} />;
 }
 
 export default MyApp;

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import "@/assets/style/global.css";
 
 interface PopupProps {
@@ -17,42 +17,51 @@ interface PopupProps {
   }[];
 }
 const Popup: React.FC<PopupProps> = ({ isOpen, onClose, data }) => {
+  console.log(data, "data");
   const [openTogle, setopenTogle] = useState(true);
-  const FnGetTogle = () => {
+  const FnGetTogle = useCallback(() => {
     setopenTogle(!openTogle);
-  };
+  }, [openTogle]);
   if (!isOpen) {
     return null;
   }
   return (
     <div className="popup fixed inset-0 ">
       {data.map((item, index) => (
-        <div key={index} className="w-[800px] h-[600px] rounded-lg bg-[#fff]  ">
-          <div className="p-4">
+        <div key={index} className="rounded-lg bg-[#fff]  ">
+          <div className="px-8 py-6 ">
             <div className="flex justify-between ">
               <div>
                 <h4 className="text-xl text-[#815bef]">viettel</h4>
               </div>
               <div onClick={onClose}>
                 {/* <span className="material-icons text-white">search</span> */}
-                <span className="material-icons text-[#c1c4cf]">cancel</span>
+                <span className="material-icons text-[#c1c4cf] cursor-pointer">
+                  cancel
+                </span>
               </div>
             </div>
             <div className="flex justify-between">
               <div>
-                {item.title}-{item.price}
+                <span className="text-2xl font-semibold">{item.title} -</span>
+                <span className="text-xl text-red-600"> {item.price}</span>
               </div>
-              {item.package_type.map((item2, index) => (
-                <div
-                  className="flex justify-center rounded-lg p-2 border-[#815bef]"
-                  key={index}
-                >
-                  {item2.title}
-                </div>
-              ))}
+              <div className="flex gap-2">
+                {item.package_type.map((item2, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-center rounded-lg border-[1px] border-[#815bef] cursor-pointer"
+                  >
+                    <p className="p-2">{item2.title}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="flex justify-between" onClick={FnGetTogle}>
-              <h5>Thông tin chi tiết</h5>
+            <div
+              className="flex justify-between mt-1 cursor-pointer"
+              onClick={FnGetTogle}
+            >
+              <h5 className="font-semibold">Thông tin chi tiết</h5>
             </div>
             <div
               className={`${
@@ -61,13 +70,13 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, data }) => {
             >
               <div className="py-2">
                 <div
+                  className="pl-2"
                   dangerouslySetInnerHTML={{ __html: item.description }}
                 ></div>
               </div>
             </div>
-
             <div>
-              <h1>Mua gói cước</h1>
+              <h1 className="font-semibold">Mua gói cước</h1>
               <div className="p-8  grid grid-cols-12 gap-4 bg-[#f8f8f8] rounded-lg">
                 <div className="col-span-7">
                   <div className="mb-[20px]">
@@ -82,7 +91,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, data }) => {
                       Hình thức thanh toán
                       <span className="text-red-500">*</span>
                     </div>
-                    <div className="flex justifty-between gap-2">
+                    <div className="flex justify-between gap-2">
                       <input className="w-[20px]" type="radio"></input>
                       <label>TK viễn thông</label>
                     </div>
@@ -91,7 +100,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, data }) => {
                     <div>
                       Hình thức đăng ký <span className="text-red-500">*</span>
                     </div>
-                    <div className="flex justifty-between gap-2">
+                    <div className="flex justify-between gap-2">
                       <input className="w-[20px]" type="radio"></input>{" "}
                       <label>SMS</label>
                       <input className="w-[20px]" type="radio"></input>{" "}
@@ -105,12 +114,12 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, data }) => {
                       className="w-full px-4 py-2 rounded-lg relative outline-none"
                     />
                     <input
-                      className="absolute submit-code rounded-lg text-[#fff] text-xs "
+                      className="absolute submit-code rounded-lg text-[#fff] text-xs cursor-pointer"
                       type="submit"
                       value="áp dụng"
                     />
                   </div>
-                  <p className="text-white text-center text-[15px] content-center rounded-lg  bg-[#815bef] pl-8 pr-8 pt-3 pb-3 mb-[30px] ">
+                  <p className="cursor-pointer text-white text-center text-[15px] content-center rounded-lg  bg-[#815bef] pl-8 pr-8 pt-3 pb-3 mb-[30px] ">
                     Mua gói cước
                   </p>
                 </div>
