@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 function MyApp({ Component, pageProps }: AppProps) {
   const [loggedInUser] = useAuthState(auth);
-  console.log(loggedInUser, "loggedInUser");
   useEffect(() => {
     const setUserInDb = async () => {
       try {
@@ -19,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             lastSeen: serverTimestamp(),
             photoURL: loggedInUser?.photoURL,
           },
-          { merge: true } // just update what is changed
+          { merge: true }
         );
       } catch (error) {
         console.log("ERROR SETTING USER INFO IN DB", error);
