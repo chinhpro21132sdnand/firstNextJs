@@ -12,29 +12,11 @@ body {
 }
 body {
   width: 100vw;
-  overflow-x: hidden;
   min-height: 100vh;
-}
-html {
-  scroll-behavior: smooth;
-}
-
-html::-webkit-scrollbar {
-  width: 10px;
-  height: 12px;
+  overflow: hidden; /* Ẩn thanh cuộn */
+  max-height: 100%; /* Đảm bảo không cuộn */
 }
 
-/* Nền của thanh cuộn */
-html::-webkit-scrollbar-track {
-  background: #fff !important;
-  border-radius: 10px;
-}
-
-/* Thanh cuộn chính */
-html::-webkit-scrollbar-thumb {
-  background: #1e2836;
-  border-radius: 10px;
-}
 .popup {
   display: flex;
   justify-content: center;

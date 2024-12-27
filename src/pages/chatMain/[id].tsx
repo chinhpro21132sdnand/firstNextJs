@@ -8,7 +8,7 @@ import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { useRouter } from "next/router";
-import { db } from "@/config/firebase";
+import { auth, db } from "@/config/firebase";
 
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
@@ -24,11 +24,9 @@ const ChatMain: NextPage = () => {
   const [loggedInUser] = useAuthState(auth);
   const { currentChat, sendMessage, messages } = useChat();
   const { currentUser } = useAuth();
-  console.log(messages, "messages");
   const handleSend = async () => {
     if (value.trim() && currentChat?.id) {
       const result = await sendMessage(currentChat.id, currentUser.uid, value);
-      console.log(result, "result");
       setValue("");
     }
   };
@@ -62,22 +60,40 @@ const ChatMain: NextPage = () => {
         </div>
       </div>
       <Paper
+        className="name"
         elevation={3}
-        sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+        sx={{ height: "76%", display: "flex", flexDirection: "column",overflowX : "scroll" }}
       >
-        <Box sx={{ flexGrow: 1, overflow: "hidden" }}>
-          <List sx={{ height: "100%", overflow: "auto" }}>
-            {messages.map((message) => (
-              <ListItem key={message.id}>
-                <Paper elevation={2} sx={{ p: 2, maxWidth: "70%" }}>
-                  <Typography>{message.text}</Typography>
-                </Paper>
-              </ListItem>
-            ))}
+        <Box sx={{ flexGrow: 1 }}>
+          <List className="h-[100%]">
+              {messages.map((message, index) => (
+                <ListItem
+                  key={message.id || index}
+                  sx={{
+                    display: "flex",
+                    justifyContent: message.senderId === loggedInUser?.uid ? "flex-end" : "flex-start",
+                    alignItems: "flex-start",
+                    mb: 1, // Khoảng cách giữa các dòng tin nhắn
+                  }}
+                >
+                  <Paper
+                    elevation={2}
+                    sx={{
+                      p: 1,
+                      maxWidth: "70%",
+                      bgcolor: message.senderId === loggedInUser?.uid ? "primary.light" : "grey.200",
+                      color: message.senderId === loggedInUser?.uid ? "white" : "black",
+                      borderRadius: message.senderId === loggedInUser?.uid ? "15px 15px 0px 15px" : "15px 15px 15px 0px",
+                    }}
+                  >
+                    <Typography>{message.text}</Typography>
+                  </Paper>
+                </ListItem>
+              ))}
           </List>
         </Box>
       </Paper>
-      <div className="absolute  bottom-0 left-0 right-0 pt-2 pb-2 bg-[white]">
+      <div className="sticky  bottom-0 left-0 right-0 pt-2 pb-2 bg-[white]">
         <div className="flex items-center justify-evenly w-[100%]">
           <CameraAltIcon />
           <ImageIcon />
