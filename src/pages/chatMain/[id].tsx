@@ -1,5 +1,13 @@
 "use client";
-import { Avatar, Box, List, ListItem, Paper, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  List,
+  ListItem,
+  Paper,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import type { NextPage } from "next";
 import "@/assets/style/global.css";
 import ImageIcon from "@mui/icons-material/Image";
@@ -15,7 +23,7 @@ import { useEffect, useState } from "react";
 import { useChat } from "@/context/chatContext";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthState } from "react-firebase-hooks/auth";
-
+import DateFormat from "@/validate/dateFormat";
 const ChatMain: NextPage = () => {
   const router = useRouter();
   const [data, setData] = useState([]);
@@ -23,6 +31,7 @@ const ChatMain: NextPage = () => {
   const { id } = router.query;
   const [loggedInUser] = useAuthState(auth);
   const { currentChat, sendMessage, messages } = useChat();
+  console.log(messages, "messages");
   const { currentUser } = useAuth();
   const handleSend = async () => {
     if (value.trim() && currentChat?.id) {
@@ -43,6 +52,7 @@ const ChatMain: NextPage = () => {
     } finally {
     }
   };
+  console.log(DateFormat(1735323366640), "chính");
   useEffect(() => {
     getData();
   }, [id]);
@@ -51,7 +61,7 @@ const ChatMain: NextPage = () => {
     setValue(message);
   };
   return (
-    <div className="relative w-[75%] bg-[antiquewhite]">
+    <div className="relative w-[75%] bg-[antiquewhite] h-[100vh]">
       <div className="w-[100%] flex items-center pb-2 huong pt-5 pb-5 pl-2 pr-2 sticky  bg-[white]">
         <Avatar />
         <div className="pl-2">
@@ -62,38 +72,60 @@ const ChatMain: NextPage = () => {
       <Paper
         className="name"
         elevation={3}
-        sx={{ height: "76%", display: "flex", flexDirection: "column",overflowX : "scroll" }}
+        sx={{
+          height: "82%",
+          display: "flex",
+          flexDirection: "column",
+          overflowY: "scroll",
+        }}
       >
         <Box sx={{ flexGrow: 1 }}>
           <List className="h-[100%]">
-              {messages.map((message, index) => (
-                <ListItem
-                  key={message.id || index}
+            {messages.map((message, index) => (
+              <ListItem
+                key={message.id || index}
+                sx={{
+                  display: "flex",
+                  justifyContent:
+                    message.senderId === loggedInUser?.uid
+                      ? "flex-end"
+                      : "flex-start",
+                  alignItems: "flex-start",
+                  mb: 1, // Khoảng cách giữa các dòng tin nhắn
+                }}
+              >
+                <Paper
+                  elevation={2}
                   sx={{
-                    display: "flex",
-                    justifyContent: message.senderId === loggedInUser?.uid ? "flex-end" : "flex-start",
-                    alignItems: "flex-start",
-                    mb: 1, // Khoảng cách giữa các dòng tin nhắn
+                    p: 1,
+                    maxWidth: "70%",
+                    bgcolor:
+                      message.senderId === loggedInUser?.uid
+                        ? "primary.light"
+                        : "grey.200",
+                    color:
+                      message.senderId === loggedInUser?.uid
+                        ? "white"
+                        : "black",
+                    borderRadius:
+                      message.senderId === loggedInUser?.uid
+                        ? "15px 15px 0px 15px"
+                        : "15px 15px 15px 0px",
                   }}
                 >
-                  <Paper
-                    elevation={2}
-                    sx={{
-                      p: 1,
-                      maxWidth: "70%",
-                      bgcolor: message.senderId === loggedInUser?.uid ? "primary.light" : "grey.200",
-                      color: message.senderId === loggedInUser?.uid ? "white" : "black",
-                      borderRadius: message.senderId === loggedInUser?.uid ? "15px 15px 0px 15px" : "15px 15px 15px 0px",
-                    }}
+                  <Tooltip
+                    title={DateFormat(message?.timestamp)}
+                    placement="right"
                   >
                     <Typography>{message.text}</Typography>
-                  </Paper>
-                </ListItem>
-              ))}
+                  </Tooltip>
+                </Paper>
+              </ListItem>
+            ))}
           </List>
         </Box>
       </Paper>
-      <div className="sticky  bottom-0 left-0 right-0 pt-2 pb-2 bg-[white]">
+      <div className="h-[auto]  bottom-0 left-0 right-0 pt-2 pb-2 bg-[white]">
         <div className="flex items-center justify-evenly w-[100%]">
           <CameraAltIcon />
           <ImageIcon />
