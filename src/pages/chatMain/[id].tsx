@@ -19,20 +19,22 @@ import { useRouter } from "next/router";
 import { auth, db } from "@/config/firebase";
 
 import { collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChat } from "@/context/chatContext";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import DateFormat from "@/validate/dateFormat";
-import SendIcon from '@mui/icons-material/Send';
+import SendIcon from "@mui/icons-material/Send";
 import EmojiPicker from "@/components/emojiIcons";
-
-
+import CallIcon from "@mui/icons-material/Call";
+import VideoCallIcon from "@mui/icons-material/VideoCall";
 const ChatMain: NextPage = () => {
   const router = useRouter();
   const [data, setData] = useState([]);
   const [value, setValue] = useState("");
-  const [icon, setIcon] = useState([]);
+  const [icon, setIcon] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const inputRef = useRef(null);
   const { id } = router.query;
   const [loggedInUser] = useAuthState(auth);
   const { currentChat, sendMessage, messages } = useChat();
@@ -59,24 +61,47 @@ const ChatMain: NextPage = () => {
   useEffect(() => {
     getData();
   }, [id]);
-
   const handleClick = (message: string) => {
     setValue(message);
   };
-  const handleEmojiSelect = (emoji) => {
-    console.log(emoji.native,'emoji.native')
-    icon.push(emoji.native)
+  const textIcon = (icon2) => {
+    const input = inputRef.current;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const text = value.substring(0, start) + icon2 + value.substring(end);
+    setTimeout(() => {
+      input.setSelectionRange(start + icon.length, start + icon.length);
+      input.focus();
+    }, 0);
+    setValue(text);
   };
-  console.log(icon,'icon')
+  const handleEmojiSelect = (emoji) => {
+    setIcon(emoji.native);
+    textIcon(icon);
+  };
+  const handleFileChange = (event) => {
+    console.log(event, "event");
+  };
   return (
     <div className="relative w-[75%] bg-[antiquewhite] h-[100vh]">
-      <div className="w-[100%] flex items-center pb-2 huong pt-5 pb-5 pl-2 pr-2 sticky  bg-[white]">
-        <Avatar />
-        <div className="pl-2">
-          <p className="text-xs">{data}</p>
-          <p className="text-sm">20/12/2024</p>
+      <div className=" w-[100%] pb-2 huong pt-5 pb-5 pl-2 pr-2 sticky  bg-[white] flex justify-between">
+        <div className="flex items-center ">
+          <Avatar />
+          <div className="pl-2">
+            <p className="text-xs">{data}</p>
+            <p className="text-sm">20/12/2024</p>
+          </div>
+        </div>
+        <div className="flex justify-between items-center gap-4">
+          <p className="border-hover">
+            <CallIcon />
+          </p>
+          <p className="border-hover">
+            <VideoCallIcon />
+          </p>
         </div>
       </div>
+
       <Paper
         className="name"
         elevation={3}
@@ -133,17 +158,41 @@ const ChatMain: NextPage = () => {
             ))}
           </List>
         </Box>
-      <EmojiPicker onEmojiSelect={handleEmojiSelect} />
-
+        <EmojiPicker isOpen={isOpen} onEmojiSelect={handleEmojiSelect} />
       </Paper>
       <div className="h-[auto]  bottom-0 left-0 right-0 pt-2 pb-2 bg-[white]">
         <div className="flex items-center justify-evenly w-[100%]">
-          <p className="border-hover"><CameraAltIcon /></p>
-          <p className="border-hover"><ImageIcon /></p>
-          <p className="border-hover"><KeyboardVoiceIcon /></p>
-          {value !== '' ? <p className="border-hover order-2"><SendIcon  /></p> : <p className="border-hover order-2"><ThumbUpAltIcon  /></p>  }
+          <p className="border-hover">
+            <CameraAltIcon />
+          </p>
+          <p className="border-hover">
+            <label htmlFor="fileInput" className="cursor-pointer">
+              <ImageIcon />
+            </label>
+            <input
+              type="file"
+              id="fileInput"
+              accept="image/*,application/pdf"
+              multiple
+              className="hidden"
+              onChange={(e) => handleFileChange(e)}
+            />
+          </p>
+          <p className="border-hover">
+            <KeyboardVoiceIcon />
+          </p>
+          {value !== "" ? (
+            <p className="border-hover order-2">
+              <SendIcon onClick={handleSend} />
+            </p>
+          ) : (
+            <p className="border-hover order-2">
+              <ThumbUpAltIcon />
+            </p>
+          )}
           <div className="order-1 w-[85%] relative  bg-slate-200 rounded-lg  flex items-center	">
             <input
+              ref={inputRef}
               className="w-[100%] h-[100%] pl-3 pr-2 pb-4 pt-4 bg-transparent outline-none	 "
               type="text"
               value={value}
@@ -151,12 +200,13 @@ const ChatMain: NextPage = () => {
             />
             <EmojiEmotionsIcon
               className=" absolute  right-[15px]"
-              onClick={handleSend}
+              onClick={() => {
+                setIsOpen(!isOpen);
+              }}
             />
           </div>
         </div>
       </div>
-
     </div>
   );
 };

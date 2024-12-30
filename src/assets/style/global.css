@@ -43,10 +43,11 @@ body {
 .huong {
   border-bottom: 1px solid whitesmoke;
 }
-.border-hover{
+.border-hover {
   padding: 10px;
 }
-.border-hover:hover{
-  border-radius: 10px ;
+.border-hover:hover {
+  cursor: pointer;
+  border-radius: 10px;
   background-color: antiquewhite;
 }
