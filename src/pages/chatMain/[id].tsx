@@ -24,14 +24,18 @@ import { useChat } from "@/context/chatContext";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import DateFormat from "@/validate/dateFormat";
+import SendIcon from '@mui/icons-material/Send';
+import EmojiPicker from "@/components/emojiIcons";
+
+
 const ChatMain: NextPage = () => {
   const router = useRouter();
   const [data, setData] = useState([]);
   const [value, setValue] = useState("");
+  const [icon, setIcon] = useState([]);
   const { id } = router.query;
   const [loggedInUser] = useAuthState(auth);
   const { currentChat, sendMessage, messages } = useChat();
-  console.log(messages, "messages");
   const { currentUser } = useAuth();
   const handleSend = async () => {
     if (value.trim() && currentChat?.id) {
@@ -52,7 +56,6 @@ const ChatMain: NextPage = () => {
     } finally {
     }
   };
-  console.log(DateFormat(1735323366640), "chính");
   useEffect(() => {
     getData();
   }, [id]);
@@ -60,6 +63,11 @@ const ChatMain: NextPage = () => {
   const handleClick = (message: string) => {
     setValue(message);
   };
+  const handleEmojiSelect = (emoji) => {
+    console.log(emoji.native,'emoji.native')
+    icon.push(emoji.native)
+  };
+  console.log(icon,'icon')
   return (
     <div className="relative w-[75%] bg-[antiquewhite] h-[100vh]">
       <div className="w-[100%] flex items-center pb-2 huong pt-5 pb-5 pl-2 pr-2 sticky  bg-[white]">
@@ -73,9 +81,10 @@ const ChatMain: NextPage = () => {
         className="name"
         elevation={3}
         sx={{
-          height: "82%",
+          height: "84%",
           display: "flex",
           flexDirection: "column",
+          backgroundColor: "antiquewhite",
           overflowY: "scroll",
         }}
       >
@@ -124,15 +133,16 @@ const ChatMain: NextPage = () => {
             ))}
           </List>
         </Box>
+      <EmojiPicker onEmojiSelect={handleEmojiSelect} />
+
       </Paper>
       <div className="h-[auto]  bottom-0 left-0 right-0 pt-2 pb-2 bg-[white]">
         <div className="flex items-center justify-evenly w-[100%]">
-          <CameraAltIcon />
-          <ImageIcon />
-          <KeyboardVoiceIcon />
-          <ThumbUpAltIcon className="order-2" />
-
-          <div className="order-1 w-[85%] relative  bg-slate-200 rounded-lg overflow-hidden flex items-center	">
+          <p className="border-hover"><CameraAltIcon /></p>
+          <p className="border-hover"><ImageIcon /></p>
+          <p className="border-hover"><KeyboardVoiceIcon /></p>
+          {value !== '' ? <p className="border-hover order-2"><SendIcon  /></p> : <p className="border-hover order-2"><ThumbUpAltIcon  /></p>  }
+          <div className="order-1 w-[85%] relative  bg-slate-200 rounded-lg  flex items-center	">
             <input
               className="w-[100%] h-[100%] pl-3 pr-2 pb-4 pt-4 bg-transparent outline-none	 "
               type="text"
@@ -146,6 +156,7 @@ const ChatMain: NextPage = () => {
           </div>
         </div>
       </div>
+
     </div>
   );
 };
