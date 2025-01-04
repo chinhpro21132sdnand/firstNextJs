@@ -11,31 +11,58 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import "@/assets/style/global.css";
 import { useCollection } from "react-firebase-hooks/firestore";
 import FormDialog from "../comon/popup";
-import { collection, query, where } from "firebase/firestore";
+import {
+  collection,
+  endAt,
+  orderBy,
+  query,
+  startAt,
+  where,
+} from "firebase/firestore";
 import AvatarList from "../avatar";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { orderByChild } from "firebase/database";
 const SideBar: NextPage = () => {
   const [loggedInUser] = useAuthState(auth);
   const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInput] = useState("");
   const SignOut = () => {
     signOut(auth);
   };
   const handelClick = () => {
     setIsOpen(true);
   };
+  const conversationsRef = collection(db, "conversations");
+
   const queryGetConversationsForCurrentUser = query(
-    collection(db, "conversations"),
+    conversationsRef,
     where("users", "array-contains", loggedInUser?.email)
   );
+
+  // Sử dụng hook để lấy dữ liệu
   const [conversationsSnapshot] = useCollection(
     queryGetConversationsForCurrentUser
   );
+  const conversations = conversationsSnapshot?.docs
+    .map((doc) => ({
+      id: doc.id,
+      data: doc.data(),
+    }))
+    .filter((use) => {
+      return use.data.users && use.data.users[1]?.includes(inputValue);
+    });
 
+  const handleChange = useCallback(
+    (event) => {
+      setInput(event.target.value);
+    },
+    [inputValue]
+  );
   const handelClose = () => {
     setIsOpen(false);
   };
   return (
-    <div className="w-[25%] h-[100vh]  border-1 border">
+    <div className="w-[25%]   border-1 border ">
       <div className="w-[100%] flex items-center justify-between pb-2 huong pt-5 pb-5 pl-2 pr-2">
         <Tooltip title={loggedInUser?.email as string} placement="right">
           <Avatar
@@ -54,6 +81,7 @@ const SideBar: NextPage = () => {
         <Input
           className="w-[100%] relative pl-[25px] pt-3 pb-3"
           placeholder="Search in conversations"
+          onChange={() => handleChange(event)}
         ></Input>
       </div>
       <div className="w-[100%]  huong">
@@ -61,9 +89,9 @@ const SideBar: NextPage = () => {
           START A NEW CONVERSATION
         </Button>
       </div>
-      <div className="w-[100%] huong">
-        {conversationsSnapshot?.docs.map((data, index) => (
-          <AvatarList key={index} Data={data} />
+      <div className="w-[100%] huong overflow-y-auto  h-[65%]	">
+        {conversations?.map((data, index) => (
+          <AvatarList key={index} Data={data} InputValue={inputValue} />
         ))}
       </div>
       <FormDialog

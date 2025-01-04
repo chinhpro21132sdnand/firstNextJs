@@ -15,7 +15,6 @@ export function ChatProvider({ children }) {
   }, [id]);
   useEffect(() => {
     if (currentChat?.id) {
-      console.log(currentChat?.id, "currentChat?.idcurrentChat?.id");
       const unsubscribe = ChatService.subscribeToMessages(
         currentChat?.id,
         setMessages

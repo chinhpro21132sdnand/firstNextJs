@@ -9,11 +9,15 @@ import Avatar from "@mui/material/Avatar";
 import ImageIcon from "@mui/icons-material/Image";
 import FilterData from "@/validate/filterData";
 import Link from "next/link";
+
 type data = {
   Data: [];
+  InputValue: string;
 };
 const AvatarList: React.FC<data> = ({ Data }) => {
-  const user = FilterData(Data.data());
+  console.log(Data);
+  const user = FilterData(Data);
+
   return (
     <Link href={`/chatMain/${Data.id}`}>
       <List

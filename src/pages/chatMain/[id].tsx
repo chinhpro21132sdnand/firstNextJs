@@ -28,17 +28,36 @@ import SendIcon from "@mui/icons-material/Send";
 import EmojiPicker from "@/components/emojiIcons";
 import CallIcon from "@mui/icons-material/Call";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
+import DeleteIcon from "@mui/icons-material/Delete";
+import UpdateIcon from "@mui/icons-material/Update";
+import Menu2 from "@/components/comon/menu";
 const ChatMain: NextPage = () => {
   const router = useRouter();
   const [data, setData] = useState([]);
   const [value, setValue] = useState("");
   const [icon, setIcon] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [idMessages, setIdMessages] = useState("");
   const inputRef = useRef(null);
   const { id } = router.query;
+  const [isOpenCrud, setisOpenCrud] = useState(false);
   const [loggedInUser] = useAuthState(auth);
   const { currentChat, sendMessage, messages } = useChat();
   const { currentUser } = useAuth();
+  const dataCrud = [
+    {
+      id: 1,
+      icon: <DeleteIcon />,
+      title: "Thu hồi",
+    },
+    {
+      id: 2,
+      icon: <UpdateIcon />,
+      title: "Cập nhật ",
+    },
+  ];
+
   const handleSend = async () => {
     if (value.trim() && currentChat?.id) {
       const result = await sendMessage(currentChat.id, currentUser.uid, value);
@@ -79,8 +98,13 @@ const ChatMain: NextPage = () => {
     setIcon(emoji.native);
     textIcon(icon);
   };
-  const handleFileChange = (event) => {
-    console.log(event, "event");
+  const handleCRUD = (id, event) => {
+    setAnchorEl(event.target);
+    setIdMessages(id);
+    setisOpenCrud(true);
+  };
+  const handleClose = () => {
+    setisOpenCrud(false);
   };
   return (
     <div className="relative w-[75%] bg-[antiquewhite] h-[100vh]">
@@ -114,7 +138,7 @@ const ChatMain: NextPage = () => {
         }}
       >
         <Box sx={{ flexGrow: 1 }}>
-          <List className="h-[100%]">
+          <List className="h-[auto]">
             {messages.map((message, index) => (
               <ListItem
                 key={message.id || index}
@@ -125,10 +149,21 @@ const ChatMain: NextPage = () => {
                       ? "flex-end"
                       : "flex-start",
                   alignItems: "flex-start",
-                  mb: 1, // Khoảng cách giữa các dòng tin nhắn
+                  mb: 1,
                 }}
               >
+                <Menu2
+                  dataCrud={dataCrud}
+                  isOpenCrud={isOpenCrud}
+                  message={message}
+                  id={id}
+                  idMessages={idMessages}
+                  anchorEl={anchorEl}
+                  handleClose={handleClose}
+                />
+
                 <Paper
+                  onClick={() => handleCRUD(message.id, event)}
                   elevation={2}
                   sx={{
                     p: 1,
@@ -193,7 +228,7 @@ const ChatMain: NextPage = () => {
           <div className="order-1 w-[85%] relative  bg-slate-200 rounded-lg  flex items-center	">
             <input
               ref={inputRef}
-              className="w-[100%] h-[100%] pl-3 pr-2 pb-4 pt-4 bg-transparent outline-none	 "
+              className="w-[100%] h-[100%] pl-3 pr-2 pb-4 pt-4 bg-transparent outline-none"
               type="text"
               value={value}
               onChange={(e) => handleClick(e.target.value)}

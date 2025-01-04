@@ -1,22 +1,95 @@
 "use client";
-import React from "react";
-import "@/assets/style/global.css";
-interface MenuProps {
-  isOpen: boolean;
-}
-const MenuData: React.FC<MenuProps> = ({ isOpen }) => {
-  if (!isOpen) {
-    return null; // Return early if isOpen is false to avoid unnecessary render.  This can help improve performance.  In a real-world application, you might want to use a different approach to handle this.  For example, you could use a state management library like Redux or MobX to manage the isOpen state.  But for this simple example, it's fine to use conditional rendering.  Note: This example does not include any animations or transitions for the menu opening or closing.  For a more complex application, you might want to consider using CSS transitions or animations to make the menu more visually appealing.  For example, you could use CSS keyframes or a library like react-transition-group to handle the animation.  But for this simple example, it's fine to use a simple conditional rendering approach.  Note: This example does not include any handling for menu item hover or active states.  For a more complex application, you might want to consider using
+import * as React from "react";
+import MenuList from "@mui/material/MenuList";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Menu from "@mui/material/Menu";
+import { database } from "@/config/firebase";
+import { ref, remove } from "firebase/database";
+
+type CrudItem = {
+  icon: React.ReactNode;
+  title: string;
+};
+
+type Message = {
+  id: string;
+};
+
+type isOpenCrud = {
+  isOpenCrud: boolean;
+  dataCrud: CrudItem[];
+  message: Message | null;
+  idMessages: string;
+  id: string;
+  anchorEl: HTMLElement | null;
+  handleClose: () => void;
+};
+
+const Menu2: React.FC<isOpenCrud> = ({
+  dataCrud,
+  isOpenCrud,
+  message,
+  handleClose,
+  anchorEl,
+  idMessages,
+  id,
+}) => {
+  if (!isOpenCrud || !message || message.id !== idMessages) {
+    return null;
   }
+
+  // Sử dụng useMemo để tối ưu hóa tham chiếu
+  const dataRef = React.useMemo(() => {
+    return idMessages
+      ? ref(database, `chats/${id}/messages/${idMessages}`)
+      : null;
+  }, [idMessages]);
+
+  // Xử lý sự kiện xóa dữ liệu
+  const handelClick = React.useCallback(
+    (itemId) => {
+      if (itemId === 1) {
+        remove(dataRef)
+          .then((res) => {
+            console.log("Dữ liệu đã được xóa thành công.");
+          })
+          .catch((error) => {
+            console.error("Lỗi khi xóa dữ liệu:", error);
+          });
+      }
+    },
+    [dataRef]
+  );
+
   return (
-    <div className="menu w-[100%] h-[100vh] ">
-      <ul>
-        <li>Home</li>
-        <li>About</li>
-        <li>Services</li>
-        <li>Contact</li>
-      </ul>
-    </div>
+    <Menu
+      anchorEl={anchorEl}
+      open={isOpenCrud}
+      onClose={handleClose}
+      slotProps={{
+        paper: {
+          sx: {
+            width: "100%",
+            maxWidth: 200,
+            bgcolor: "background.paper",
+            outline: "none",
+            zIndex: 10000,
+          },
+        },
+      }}
+    >
+      <MenuList aria-label="main mailbox folders">
+        {dataCrud.map((item, index) => (
+          <MenuItem key={index} onClick={() => handelClick(item?.id)}>
+            <ListItemIcon>{item?.icon}</ListItemIcon>
+            <ListItemText primary={item?.title} />
+          </MenuItem>
+        ))}
+      </MenuList>
+    </Menu>
   );
 };
-export default MenuData;
+
+export default Menu2;
