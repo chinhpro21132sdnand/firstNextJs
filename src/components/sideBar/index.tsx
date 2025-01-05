@@ -10,19 +10,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "@/assets/style/global.css";
 import { useCollection } from "react-firebase-hooks/firestore";
-import FormDialog from "../comon/popup";
-import {
-  collection,
-  endAt,
-  orderBy,
-  query,
-  startAt,
-  where,
-} from "firebase/firestore";
-import AvatarList from "../avatar";
+import { collection, query, where } from "firebase/firestore";
 import { useCallback, useState } from "react";
-import { orderByChild } from "firebase/database";
+import dynamic from "next/dynamic";
 const SideBar: NextPage = () => {
+  const FormDialog = dynamic(() => import("../comon/popup"));
+  const AvatarList = dynamic(() => import("../avatar"));
   const [loggedInUser] = useAuthState(auth);
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInput] = useState("");

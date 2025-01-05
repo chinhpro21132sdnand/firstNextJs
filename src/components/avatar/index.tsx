@@ -15,11 +15,9 @@ type data = {
   InputValue: string;
 };
 const AvatarList: React.FC<data> = ({ Data }) => {
-  console.log(Data);
   const user = FilterData(Data);
-
   return (
-    <Link href={`/chatMain/${Data.id}`}>
+    <Link href={`/chatMain/${Data?.id}`}>
       <List
         sx={{ width: "100%", bgcolor: "background.paper" }}
         className="hover:bg-[antiquewhite] cursor-pointer"

@@ -24,14 +24,16 @@ import { useChat } from "@/context/chatContext";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import DateFormat from "@/validate/dateFormat";
-import SendIcon from "@mui/icons-material/Send";
-import EmojiPicker from "@/components/emojiIcons";
-import CallIcon from "@mui/icons-material/Call";
-import VideoCallIcon from "@mui/icons-material/VideoCall";
-import DeleteIcon from "@mui/icons-material/Delete";
-import UpdateIcon from "@mui/icons-material/Update";
-import Menu2 from "@/components/comon/menu";
+import dynamic from "next/dynamic";
+
 const ChatMain: NextPage = () => {
+  const Menu2 = dynamic(() => import("@/components/comon/menu"));
+  const EmojiPicker = dynamic(() => import("@/components/emojiIcons"));
+  const SendIcon = dynamic(() => import("@mui/icons-material/Send"));
+  const CallIcon = dynamic(() => import("@mui/icons-material/Call"));
+  const DeleteIcon = dynamic(() => import("@mui/icons-material/Delete"));
+  const UpdateIcon = dynamic(() => import("@mui/icons-material/Update"));
+  const VideoCallIcon = dynamic(() => import("@mui/icons-material/VideoCall"));
   const router = useRouter();
   const [data, setData] = useState([]);
   const [value, setValue] = useState("");
