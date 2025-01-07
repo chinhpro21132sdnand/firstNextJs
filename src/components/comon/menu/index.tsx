@@ -7,10 +7,12 @@ import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import { database } from "@/config/firebase";
 import { ref, remove } from "firebase/database";
+import { useCallback, useMemo } from "react";
 
 type CrudItem = {
   icon: React.ReactNode;
   title: string;
+  id: string; // Ensure there is an id field
 };
 
 type Message = {
@@ -40,27 +42,25 @@ const Menu2: React.FC<isOpenCrud> = ({
     return null;
   }
 
-  // Sử dụng useMemo để tối ưu hóa tham chiếu
-  const dataRef = React.useMemo(() => {
+  const dataRef = useMemo(() => {
     return idMessages
       ? ref(database, `chats/${id}/messages/${idMessages}`)
       : null;
-  }, [idMessages]);
+  }, [idMessages, id]);
 
-  // Xử lý sự kiện xóa dữ liệu
-  const handelClick = React.useCallback(
-    (itemId) => {
-      if (itemId === 1) {
+  const handelClick = useCallback(
+    (itemId: string) => {
+      if (itemId === "1" && dataRef) {
         remove(dataRef)
-          .then((res) => {
-            console.log("Dữ liệu đã được xóa thành công.");
+          .then(() => {
+            console.log("Data successfully deleted.");
           })
           .catch((error) => {
-            console.error("Lỗi khi xóa dữ liệu:", error);
+            console.error("Error deleting data:", error);
           });
       }
     },
-    [dataRef]
+    [dataRef] // Dependency on dataRef, so it's recalculated when dataRef changes
   );
 
   return (
@@ -82,9 +82,9 @@ const Menu2: React.FC<isOpenCrud> = ({
     >
       <MenuList aria-label="main mailbox folders">
         {dataCrud.map((item, index) => (
-          <MenuItem key={index} onClick={() => handelClick(item?.id)}>
-            <ListItemIcon>{item?.icon}</ListItemIcon>
-            <ListItemText primary={item?.title} />
+          <MenuItem key={index} onClick={() => handelClick(item.id)}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.title} />
           </MenuItem>
         ))}
       </MenuList>
