@@ -4,15 +4,14 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 const firebaseConfig = {
-  apiKey: "AIzaSyBFT3zzqBPbrkB220dPAz0eFFP6o_riThk",
-  authDomain: "chat-app-6653f.firebaseapp.com",
-  projectId: "chat-app-6653f",
-  databaseURL:
-    "https://chat-app-6653f-default-rtdb.asia-southeast1.firebasedatabase.app",
-  storageBucket: "chat-app-6653f.firebasestorage.app",
-  messagingSenderId: "861225590851",
-  appId: "1:861225590851:web:d37603133d7d55b87cf4f6",
-  measurementId: "G-5H741Z3D50",
+  apiKey: process.env.NEXT_PUBLIC_APIKEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECTID,
+  databaseURL: process.env.NEXT_PUBLIC_DATABASEURL,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
+  appId: process.env.NEXT_PUBLIC_APPID,
+  measurementId: process.env.NEXT_PUBLIC_MEANSUREMENTID,
 };
 
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);

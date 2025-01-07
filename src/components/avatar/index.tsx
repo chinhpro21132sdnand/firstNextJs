@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { FC } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -10,11 +10,16 @@ import ImageIcon from "@mui/icons-material/Image";
 import FilterData from "@/validate/filterData";
 import Link from "next/link";
 
-type data = {
-  Data: [];
+type DataType = {
+  id: string;
+  name: string; // Thêm các trường khác nếu cần
+};
+
+type Props = {
+  Data: DataType[];
   InputValue: string;
 };
-const AvatarList: React.FC<data> = ({ Data }) => {
+const AvatarList: FC<Props> = ({ Data }) => {
   const user = FilterData(Data);
   return (
     <Link href={`/chatMain/${Data?.id}`}>

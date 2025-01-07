@@ -1,39 +1,36 @@
 "use client";
-import {
-  Avatar,
-  Box,
-  List,
-  ListItem,
-  Paper,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import "@/assets/style/global.css";
 import ImageIcon from "@mui/icons-material/Image";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
+import SendIcon from "@mui/icons-material/Send";
+import CallIcon from "@mui/icons-material/Call";
+import DeleteIcon from "@mui/icons-material/Delete";
+import UpdateIcon from "@mui/icons-material/Update";
+import VideoCallIcon from "@mui/icons-material/VideoCall";
 import { useRouter } from "next/router";
 import { auth, db } from "@/config/firebase";
-
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { useChat } from "@/context/chatContext";
 import { useAuth } from "@/context/AuthContext";
 import { useAuthState } from "react-firebase-hooks/auth";
 import DateFormat from "@/validate/dateFormat";
+import Avatar from "@mui/material/Avatar";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import dynamic from "next/dynamic";
 
 const ChatMain: NextPage = () => {
   const Menu2 = dynamic(() => import("@/components/comon/menu"));
   const EmojiPicker = dynamic(() => import("@/components/emojiIcons"));
-  const SendIcon = dynamic(() => import("@mui/icons-material/Send"));
-  const CallIcon = dynamic(() => import("@mui/icons-material/Call"));
-  const DeleteIcon = dynamic(() => import("@mui/icons-material/Delete"));
-  const UpdateIcon = dynamic(() => import("@mui/icons-material/Update"));
-  const VideoCallIcon = dynamic(() => import("@mui/icons-material/VideoCall"));
   const router = useRouter();
   const [data, setData] = useState([]);
   const [value, setValue] = useState("");
