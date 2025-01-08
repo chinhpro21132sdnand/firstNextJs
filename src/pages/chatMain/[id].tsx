@@ -1,5 +1,5 @@
 "use client";
-import type { GetServerSideProps, NextPage } from "next";
+import type { NextPage } from "next";
 import "@/assets/style/global.css";
 import ImageIcon from "@mui/icons-material/Image";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
@@ -59,7 +59,7 @@ const ChatMain: NextPage = () => {
 
   const handleSend = async () => {
     if (value.trim() && currentChat?.id) {
-      const result = await sendMessage(currentChat.id, currentUser.uid, value);
+      await sendMessage(currentChat.id, currentUser.uid, value);
       setValue("");
     }
   };
