@@ -1,4 +1,5 @@
 "use client";
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
@@ -18,15 +19,14 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { debounce } from "lodash";
 
-const SideBar: NextPage = () => {
-  const FormDialog = dynamic(() => import("../comon/popup"), {
-    ssr: false,
-    loading: () => <div>Loading...</div>,
-  });
-  const AvatarList = dynamic(() => import("../avatar"), {
-    ssr: false,
-  });
+// Components
+const FormDialog = dynamic(() => import("../comon/popup"), {
+  ssr: false,
+  loading: () => <div>Loading...</div>,
+});
+const AvatarList = dynamic(() => import("../avatar"), { ssr: false });
 
+const SideBar: NextPage = () => {
   const [loggedInUser] = useAuthState(auth);
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInput] = useState("");
@@ -57,14 +57,16 @@ const SideBar: NextPage = () => {
   }, [handleChange]);
 
   const filteredConversations = useMemo(() => {
-    return conversationsSnapshot?.docs
-      .map((doc) => ({
-        id: doc.id,
-        data: doc.data(),
-      }))
-      .filter((use) => {
-        return use.data.users && use.data.users[1]?.includes(inputValue);
-      });
+    return (
+      conversationsSnapshot?.docs
+        .map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+        .filter(
+          (use) => use.data.users && use.data.users[1]?.includes(inputValue)
+        ) || []
+    );
   }, [inputValue, conversationsSnapshot]);
 
   const handelClick = useCallback(() => setIsOpen(true), []);
@@ -99,13 +101,9 @@ const SideBar: NextPage = () => {
         </Button>
       </div>
       <div className="w-[100%] huong overflow-y-auto h-[65%]">
-        {filteredConversations?.length > 0 ? (
-          filteredConversations.map((data, index) => (
-            <AvatarList key={index} Data={data} InputValue={inputValue} />
-          ))
-        ) : (
-          <div className="text-center pt-4">No conversations found</div>
-        )}
+        {filteredConversations.map((data) => (
+          <AvatarList key={data.id} Data={data} />
+        ))}
       </div>
       <FormDialog
         isOpen={isOpen}
