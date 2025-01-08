@@ -12,18 +12,19 @@ import Link from "next/link";
 
 type DataType = {
   id: string;
-  name: string;
+  data: {
+    users: string[];
+  };
 };
 
 type Props = {
-  Data: DataType[];
-  InputValue: string;
+  Data: DataType;
 };
 const AvatarList: FC<Props> = ({ Data }) => {
-  const user = FilterData(Data);
-  console.log(user, "user");
+  console.log(Data, "iddđ");
+  const user = FilterData({ users: Data });
   return (
-    <Link href={`/chatMain/${Data?.id}`}>
+    <Link href={`/chatMain/${Data.id}`}>
       <List
         sx={{ width: "100%", bgcolor: "background.paper" }}
         className="hover:bg-[antiquewhite] cursor-pointer"
