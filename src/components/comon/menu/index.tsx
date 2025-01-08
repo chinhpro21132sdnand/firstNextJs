@@ -6,7 +6,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import { database } from "@/config/firebase";
-import { ref, remove } from "firebase/database";
+import { ref, remove, DatabaseReference } from "firebase/database";
 import { useCallback, useMemo } from "react";
 
 type CrudItem = {
@@ -38,16 +38,19 @@ const Menu2: React.FC<isOpenCrud> = ({
   idMessages,
   id,
 }) => {
+  // If the CRUD menu is not open or message doesn't match idMessages, return null
   if (!isOpenCrud || !message || message.id !== idMessages) {
     return null;
   }
 
-  const dataRef = useMemo(() => {
+  // Memoize the dataRef reference to avoid unnecessary recalculations
+  const dataRef = useMemo<DatabaseReference | null>(() => {
     return idMessages
       ? ref(database, `chats/${id}/messages/${idMessages}`)
       : null;
   }, [idMessages, id]);
 
+  // Callback for handling item click and deleting the data
   const handelClick = useCallback(
     (itemId: string) => {
       if (itemId === "1" && dataRef) {
@@ -60,7 +63,7 @@ const Menu2: React.FC<isOpenCrud> = ({
           });
       }
     },
-    [dataRef] // Dependency on dataRef, so it's recalculated when dataRef changes
+    [dataRef]
   );
 
   return (
