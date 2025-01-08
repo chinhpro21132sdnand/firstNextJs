@@ -1,7 +1,13 @@
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
-
-const EmojiPicker = ({ onEmojiSelect, isOpen }) => {
+import { FC } from "react";
+type data = {
+  isOpen: boolean;
+  onEmojiSelect: () => void;
+};
+const EmojiPicker: FC<data> = ({ onEmojiSelect, isOpen }) => {
+  console.log(onEmojiSelect, "1");
+  console.log(isOpen, "2");
   if (!isOpen) {
     return;
   } else {
