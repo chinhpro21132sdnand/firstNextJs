@@ -13,7 +13,7 @@ import Link from "next/link";
 type DataType = {
   id: string;
   data: {
-    users: string[];
+    users: [];
   };
 };
 
@@ -21,7 +21,6 @@ type Props = {
   Data: DataType;
 };
 const AvatarList: FC<Props> = ({ Data }) => {
-  console.log(Data, "iddđ");
   const user = FilterData({ users: Data });
   return (
     <Link href={`/chatMain/${Data.id}`}>

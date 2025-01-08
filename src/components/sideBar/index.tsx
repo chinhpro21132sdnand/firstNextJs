@@ -68,7 +68,7 @@ const SideBar: NextPage = () => {
         ) || []
     );
   }, [inputValue, conversationsSnapshot]);
-
+  console.log(filteredConversations, "filteredConversations");
   const handelClick = useCallback(() => setIsOpen(true), []);
   const handelClose = useCallback(() => setIsOpen(false), []);
 
