@@ -1,8 +1,11 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/config/firebase";
 import { useEffect, useState } from "react";
-
-function FilterData(value: { users: string[] }) {
+type DataType = {
+  id: string;
+  name: string;
+};
+function FilterData(value: { users: DataType[] }) {
   const [loggedInUser] = useAuthState(auth);
   const [user, setUser] = useState<string | undefined>(undefined);
 
