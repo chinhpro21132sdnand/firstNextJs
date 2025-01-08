@@ -1,4 +1,5 @@
 "use client";
+
 import * as React from "react";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,7 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import { database } from "@/config/firebase";
 import { ref, remove, DatabaseReference } from "firebase/database";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 type CrudItem = {
   icon: React.ReactNode;
@@ -32,39 +33,35 @@ type isOpenCrud = {
 const Menu2: React.FC<isOpenCrud> = ({
   dataCrud,
   isOpenCrud,
-  message,
   handleClose,
   anchorEl,
   idMessages,
   id,
 }) => {
-  // If the CRUD menu is not open or message doesn't match idMessages, return null
-  if (!isOpenCrud || !message || message.id !== idMessages) {
+  const dataRef = useMemo(() => {
+    if (idMessages) {
+      return ref(database, `chats/${id}/messages/${idMessages}`);
+    }
     return null;
-  }
-
-  // Memoize the dataRef reference to avoid unnecessary recalculations
-  const dataRef = useMemo<DatabaseReference | null>(() => {
-    return idMessages
-      ? ref(database, `chats/${id}/messages/${idMessages}`)
-      : null;
   }, [idMessages, id]);
 
-  // Callback for handling item click and deleting the data
-  const handelClick = useCallback(
-    (itemId: string) => {
-      if (itemId === "1" && dataRef) {
-        remove(dataRef)
-          .then(() => {
-            console.log("Data successfully deleted.");
-          })
-          .catch((error) => {
-            console.error("Error deleting data:", error);
-          });
-      }
-    },
-    [dataRef]
-  );
+  // Hàm xóa dữ liệu từ Firebase
+  const deleteData = (ref: DatabaseReference) => {
+    remove(ref)
+      .then(() => {
+        console.log("Data successfully deleted.");
+      })
+      .catch((error) => {
+        console.error("Error deleting data:", error);
+      });
+  };
+
+  // Hàm xử lý khi người dùng click vào item
+  const handleItemClick = (itemId: string) => {
+    if (itemId === "1" && dataRef) {
+      deleteData(dataRef);
+    }
+  };
 
   return (
     <Menu
@@ -84,8 +81,8 @@ const Menu2: React.FC<isOpenCrud> = ({
       }}
     >
       <MenuList aria-label="main mailbox folders">
-        {dataCrud.map((item, index) => (
-          <MenuItem key={index} onClick={() => handelClick(item.id)}>
+        {dataCrud.map((item) => (
+          <MenuItem key={item.id} onClick={() => handleItemClick(item.id)}>
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.title} />
           </MenuItem>

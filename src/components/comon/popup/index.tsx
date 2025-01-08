@@ -36,11 +36,6 @@ const FormDialog: React.FC<isOpen> = ({ isOpen, onClose, loggedInUser }) => {
           component: "form",
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson: Record<string, string> = Object.fromEntries(
-              formData.entries()
-            ) as Record<string, string>;
-            const email = formJson.email;
           },
         }}
       >
