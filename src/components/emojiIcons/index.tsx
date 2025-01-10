@@ -3,7 +3,7 @@ import data from "@emoji-mart/data";
 import { FC } from "react";
 type data = {
   isOpen: boolean;
-  onEmojiSelect: () => void;
+  onEmojiSelect: (emoji: { native: string }) => void;
 };
 const EmojiPicker: FC<data> = ({ onEmojiSelect, isOpen }) => {
   if (!isOpen) {

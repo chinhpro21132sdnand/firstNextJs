@@ -9,11 +9,12 @@ import Menu from "@mui/material/Menu";
 import { database } from "@/config/firebase";
 import { ref, remove, DatabaseReference } from "firebase/database";
 import { useMemo } from "react";
+import { useRouter } from "next/router";
 
 type CrudItem = {
   icon: React.ReactNode;
   title: string;
-  id: string; // Ensure there is an id field
+  id: number;
 };
 
 type Message = {
@@ -25,7 +26,6 @@ type isOpenCrud = {
   dataCrud: CrudItem[];
   message: Message | null;
   idMessages: string;
-  id: string;
   anchorEl: HTMLElement | null;
   handleClose: () => void;
 };
@@ -36,8 +36,10 @@ const Menu2: React.FC<isOpenCrud> = ({
   handleClose,
   anchorEl,
   idMessages,
-  id,
 }) => {
+  const router = useRouter();
+
+  const { id } = router.query;
   const dataRef = useMemo(() => {
     if (idMessages) {
       return ref(database, `chats/${id}/messages/${idMessages}`);
@@ -57,8 +59,8 @@ const Menu2: React.FC<isOpenCrud> = ({
   };
 
   // Hàm xử lý khi người dùng click vào item
-  const handleItemClick = (itemId: string) => {
-    if (itemId === "1" && dataRef) {
+  const handleItemClick = (itemId: number) => {
+    if (itemId === 1 && dataRef) {
       deleteData(dataRef);
     }
   };

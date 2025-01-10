@@ -27,7 +27,6 @@ import ListItem from "@mui/material/ListItem";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import dynamic from "next/dynamic";
-
 const ChatMain: NextPage = () => {
   const Menu2 = dynamic(() => import("@/components/comon/menu"));
   const EmojiPicker = dynamic(() => import("@/components/emojiIcons"));
@@ -36,9 +35,9 @@ const ChatMain: NextPage = () => {
   const [value, setValue] = useState("");
   const [icon, setIcon] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [idMessages, setIdMessages] = useState("");
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { id } = router.query;
   const [isOpenCrud, setisOpenCrud] = useState(false);
   const [loggedInUser] = useAuthState(auth);
@@ -58,7 +57,7 @@ const ChatMain: NextPage = () => {
   ];
 
   const handleSend = async () => {
-    if (value.trim() && currentChat?.id) {
+    if (value.trim() && currentChat?.id && currentUser) {
       await sendMessage(currentChat.id, currentUser.uid, value);
       setValue("");
     }
@@ -82,23 +81,35 @@ const ChatMain: NextPage = () => {
   const handleClick = (message: string) => {
     setValue(message);
   };
-  const textIcon = (icon2) => {
+  const textIcon = (icon2: string) => {
     const input = inputRef.current;
-    const start = input.selectionStart;
-    const end = input.selectionEnd;
-    const text = value.substring(0, start) + icon2 + value.substring(end);
-    setTimeout(() => {
-      input.setSelectionRange(start + icon.length, start + icon.length);
-      input.focus();
-    }, 0);
-    setValue(text);
+    if (input && input instanceof HTMLInputElement) {
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      const text =
+        value.substring(0, Number(start)) +
+        icon2 +
+        value.substring(Number(end) || 0);
+      setTimeout(() => {
+        input.setSelectionRange(
+          Number(start) + icon.length,
+          Number(start) + icon.length
+        );
+        input.focus();
+      }, 0);
+      setValue(text);
+    }
   };
-  const handleEmojiSelect = (emoji) => {
+  const handleEmojiSelect = (emoji: { native: string }) => {
     setIcon(emoji.native);
     textIcon(icon);
   };
-  const handleCRUD = (id, event) => {
-    setAnchorEl(event.target);
+  const handleCRUD = (
+    id: string,
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    const target = event.target as HTMLElement;
+    setAnchorEl(target);
     setIdMessages(id);
     setisOpenCrud(true);
   };
@@ -155,14 +166,13 @@ const ChatMain: NextPage = () => {
                   dataCrud={dataCrud}
                   isOpenCrud={isOpenCrud}
                   message={message}
-                  id={id}
                   idMessages={idMessages}
                   anchorEl={anchorEl}
                   handleClose={handleClose}
                 />
 
                 <Paper
-                  onClick={() => handleCRUD(message.id, event)}
+                  onClick={(event) => handleCRUD(message.id, event)}
                   elevation={2}
                   sx={{
                     p: 1,
@@ -203,14 +213,14 @@ const ChatMain: NextPage = () => {
             <label htmlFor="fileInput" className="cursor-pointer">
               <ImageIcon />
             </label>
-            <input
+            {/* <input
               type="file"
               id="fileInput"
               accept="image/*,application/pdf"
               multiple
               className="hidden"
               onChange={(e) => handleFileChange(e)}
-            />
+            /> */}
           </p>
           <p className="border-hover">
             <KeyboardVoiceIcon />
@@ -233,7 +243,7 @@ const ChatMain: NextPage = () => {
               onChange={(e) => handleClick(e.target.value)}
             />
             <EmojiEmotionsIcon
-              className=" absolute  right-[15px]"
+              className=" absolute right-[15px]"
               onClick={() => {
                 setIsOpen(!isOpen);
               }}
