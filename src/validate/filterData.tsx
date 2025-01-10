@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 type DataType = {
   id: string;
   data: {
-    users: string[];
+    users?: string[];
   };
 };
 function FilterData(value: { users: DataType }) {
@@ -13,7 +13,7 @@ function FilterData(value: { users: DataType }) {
   useEffect(() => {
     if (loggedInUser) {
       // Tìm kiếm user phù hợp
-      const foundUser = value.users.data.users
+      const foundUser = value?.users?.data?.users
         .map((item) => item)
         .flat()
         .find((email) => email !== loggedInUser?.email);
