@@ -13,14 +13,14 @@ import Link from "next/link";
 type DataType = {
   id: string;
   data: {
-    users: [];
+    users?: string[];
   };
 };
-
 type Props = {
   Data: DataType;
 };
 const AvatarList: FC<Props> = ({ Data }) => {
+  console.log(Data, "data");
   const user = FilterData({ users: Data });
   return (
     <Link href={`/chatMain/${Data.id}`}>
