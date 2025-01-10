@@ -6,8 +6,6 @@ type data = {
   onEmojiSelect: () => void;
 };
 const EmojiPicker: FC<data> = ({ onEmojiSelect, isOpen }) => {
-  console.log(onEmojiSelect, "1");
-  console.log(isOpen, "2");
   if (!isOpen) {
     return;
   } else {
