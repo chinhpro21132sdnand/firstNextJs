@@ -8,16 +8,13 @@ import React, {
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/config/firebase";
 
-// Xác định kiểu dữ liệu cho context
 interface AuthContextType {
   currentUser: User | null;
   loading: boolean;
 }
 
-// Tạo context với giá trị mặc định ban đầu là `undefined`
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Hook tùy chỉnh để sử dụng context
 export function useAuth(): AuthContextType {
   const context = useContext(AuthContext);
   if (!context) {
@@ -26,12 +23,10 @@ export function useAuth(): AuthContextType {
   return context;
 }
 
-// Xác định kiểu cho props của AuthProvider
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-// Component AuthProvider
 export function AuthProvider({ children }: AuthProviderProps) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
