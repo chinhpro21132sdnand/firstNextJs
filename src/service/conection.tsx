@@ -32,14 +32,14 @@ export class ConnectionManager {
     });
   }
 
-  static async handleConnectionError(callback) {
-    const connectedRef = ref(database, ".info/connected");
-    onValue(connectedRef, (snap) => {
-      if (snap.val() === false) {
-        callback("disconnected");
-      } else {
-        callback("connected");
-      }
-    });
-  }
+  // static async handleConnectionError(callback) {
+  //   const connectedRef = ref(database, ".info/connected");
+  //   onValue(connectedRef, (snap) => {
+  //     if (snap.val() === false) {
+  //       callback("disconnected");
+  //     } else {
+  //       callback("connected");
+  //     }
+  //   });
+  // }
 }

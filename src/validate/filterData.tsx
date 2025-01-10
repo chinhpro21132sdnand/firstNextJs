@@ -14,7 +14,7 @@ function FilterData(value: { users: DataType }) {
     if (loggedInUser) {
       // Tìm kiếm user phù hợp
       const foundUser = value?.users?.data?.users
-        .map((item) => item)
+        ?.map((item) => item)
         .flat()
         .find((email) => email !== loggedInUser?.email);
       console.log(foundUser);
