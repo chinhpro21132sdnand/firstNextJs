@@ -1,6 +1,4 @@
 import { Button } from "@mui/material";
-import Image from "next/image";
-import Whatapss from "@/img/pngtree-whatsapp-icon-png-image_3584845.WebP";
 import { auth, provider } from "@/config/firebase";
 import { signInWithPopup } from "firebase/auth";
 const Home = () => {
@@ -18,7 +16,12 @@ const Home = () => {
   return (
     <div className="w-[100%] h-[100vh] flex justify-center items-center ">
       <div className="rounded-lg border-2 w-[400px] h-[400px] flex justify-center flex-col items-center	gap-2">
-        <Image src={Whatapss} width={200} height={200} alt="Whatsapp Logo" />
+        <img
+          src="@/img/pngtree-whatsapp-icon-png-image_3584845.WebP"
+          width={200}
+          height={200}
+          alt="Whatsapp Logo"
+        />
         <Button variant="outlined" color="success" onClick={signIn}>
           Đăng nhập
         </Button>
